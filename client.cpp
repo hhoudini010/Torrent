@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 	string command ;
 
 
-	printf("Enter whole sentence (yeah, bring spaces too, I can handle it):\n");
+	printf("Enter command : ");
 	 getline(cin,line) ;
 
 
@@ -26,12 +26,30 @@ int main(int argc, char const *argv[])
 		input>>path ;
 		input>>torrent_filename ;
 
-		create_mtorrent_file(path,torrent_filename,argv[2],argv[3]) ;
+		create_mtorrent_file(path,torrent_filename,argv[2],argv[3],argv[1]) ;
 
 
 	}
 
-	
+	// else if(command.compare("get") == 0)
+	// {
+	// 	pid_t pid = fork() ;
+	// 	if(pid == 0)
+	// 	{
+	// 		while(1){
+	// 			cout<<"I'm child !"<<endl ;
+	// 			getchar() ;
+	// 			}
+	// 	}
+
+	// 	while(1)
+	// 	{
+	// 		cout<<"I'm server"<<endl ;
+	// 		getchar() ;
+	// 	}
+	// }
+
+
 
 	return 0;
 }

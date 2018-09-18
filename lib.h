@@ -5,12 +5,15 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <cstdlib>
+#include <unistd.h>
+
 
 using namespace std ;
 #ifndef ls_h
 #define ls_h
 
-void create_mtorrent_file(std::string, std::string, std::string , std::string ) ;
+void create_mtorrent_file(std::string, std::string, std::string , std::string, std::string ) ;
+void share(string,string,string) ;
 
 
 #endif
