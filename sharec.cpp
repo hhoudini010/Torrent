@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#define PORT 4444 
+#define PORT 8080 
 
 void share(string clip, string hash, string path)
 {
@@ -30,11 +30,11 @@ void share(string clip, string hash, string path)
     address.sin_addr.s_addr = inet_addr("127.0.0.1"); 
     serv_addr.sin_port = htons(PORT); 
        
-    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
-    { 
-        printf("\nInvalid address/ Address not supported \n"); 
-        exit(1) ;
-    } 
+    // if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
+    // { 
+    //     printf("\nInvalid address/ Address not supported \n"); 
+    //     exit(1) ;
+    // } 
    
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
     { 

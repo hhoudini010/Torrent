@@ -11,7 +11,7 @@
 #include <sstream>
 #include <vector>
 #include <thread>
-#define PORT 4444 
+#define PORT 8080 
 using namespace std ;
 
 
@@ -29,14 +29,13 @@ void shareproc(int new_socket,string filp)
          s << temp ;
 
          s>>temp ;
-
          if(temp.compare("share") == 0)
          {
 
             s>>temp;
             s>>temp1 ;
             s>>temp2 ;
-        }
+        
      if(!details[temp].empty()) 
          return ;
 
@@ -47,6 +46,20 @@ void shareproc(int new_socket,string filp)
 
     // cout<<details.size()<<endl  ;
     fclose(fp) ;
+
+        }
+
+        // else if(temp.compare("get") ==0)
+        // {
+        //     string hashish
+        //     s>>hashish ;
+
+        //     int len = details[hashish].size() ;
+
+        //     for(int i = 0 ; i < len; i++)
+
+
+        // }
 
     // unordered_map<string,vector<pair<string,string> > > :: iterator itr ;
 
@@ -61,6 +74,8 @@ void shareproc(int new_socket,string filp)
 
 int main(int argc, char const *argv[]) 
 { 
+    FILE *fp4 = fopen(argv[1],"w+") ;
+    fclose(fp4) ;
      FILE *fp3 = fopen(argv[1],"r") ;
     while(!feof(fp3))
     {

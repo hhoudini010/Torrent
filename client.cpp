@@ -10,7 +10,6 @@ int main(int argc, char const *argv[])
 	string line;
 	string command ;
 
-while(1){
 	printf("Enter command : ");
 	 getline(cin,line) ;
 
@@ -30,7 +29,7 @@ while(1){
 
 
 	}
-}
+
 	// else if(command.compare("get") == 0)
 	// {
 	// 	pid_t pid = fork() ;
