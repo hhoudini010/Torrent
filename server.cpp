@@ -10,10 +10,35 @@
 #include <unordered_map>
 #include <sstream>
 #include <vector>
+#include <thread>
 #define PORT 4444 
 using namespace std ;
 
+
 unordered_map<string,vector<pair<string,string> > > details ;
+
+
+void shareproc(string temp, string temp1, string temp2,string filp)
+{
+     if(!details[temp].empty()) 
+         return ;
+
+     FILE *fp = fopen(filp.c_str(),"w+") ;
+
+    details[temp].push_back(make_pair(temp1,temp2)) ;
+    fprintf(fp,"%s\n%s\n%s",temp.c_str(),temp1.c_str(),temp2.c_str()) ;
+
+    cout<<details.size()<<endl  ;
+    fclose(fp) ;
+    // unordered_map<string,vector<pair<string,string> > > :: iterator itr ;
+
+    // for(auto i = details.begin(); i!= details.end(); i++)
+    // {
+    //     int siz = i->second.size() ;
+    //     for(int j = 0; j < siz ; j++)
+    //         cout<<i->second[j].second<<endl ;
+    // }
+}
 
 
 int main(int argc, char const *argv[]) 
@@ -22,9 +47,7 @@ int main(int argc, char const *argv[])
     struct sockaddr_in address; 
     int opt = 1; 
     char buffer[512000] ;
-    int addrlen = sizeof(address); 
-    
-    char *hello = "Hello from server"; 
+    int addrlen = sizeof(address);
        
     // Creating socket file descriptor 
     int count = 0 ;
@@ -45,7 +68,7 @@ int main(int argc, char const *argv[])
     address.sin_port = htons( PORT ); 
        
     // Forcefully attaching socket to the port 8080 
-    if (bind(server_fd, (struct sockaddr *)&address,sizeof(address))<0) 
+    if (::bind(server_fd, (struct sockaddr *)&address,sizeof(address))<0) 
     { 
         perror("bind failed"); 
         exit(EXIT_FAILURE); 
@@ -62,30 +85,26 @@ int main(int argc, char const *argv[])
         perror("accept"); 
         exit(EXIT_FAILURE); 
     }
-    pid_t pid = fork() ;
-    if(pid==0){
-    
 
-        recv(new_socket,buffer,sizeof(buffer),0) ;
+    recv(new_socket,buffer,512000,0) ;  
         string temp = buffer ;
         string temp1,temp2 ;
+        stringstream s;
+         s << temp ;
 
-        stringstream s(temp) ;
+         s>>temp ;
 
-        s>>temp ;
-        s>>temp1 ;
-        s>>temp2 ;
+         if(temp.compare("share") == 0)
+         {
 
-        details[temp].push_back(make_pair(temp1,temp2)) ;
+            s>>temp;
+            s>>temp1 ;
+            s>>temp2 ;
 
-        unordered_map<string,vector<pair<string,string> > > :: iterator itr ;
-
-        itr = details.begin() ;
-
-        cout<<itr->second[0].second<<endl ;
-
-     exit(0) ;
- }
+            thread t {shareproc,temp,temp1,temp2,argv[1]}  ;
+            t.detach() ;
+    
+        }
 
     
      }

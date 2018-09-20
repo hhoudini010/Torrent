@@ -27,9 +27,9 @@ void share(string clip, string hash, string path)
     memset(&serv_addr, '0', sizeof(serv_addr)); 
    
     serv_addr.sin_family = AF_INET; 
+    address.sin_addr.s_addr = inet_addr("127.0.0.1"); 
     serv_addr.sin_port = htons(PORT); 
        
-    // Convert IPv4 and IPv6 addresses from text to binary form 
     if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
     { 
         printf("\nInvalid address/ Address not supported \n"); 
@@ -41,7 +41,8 @@ void share(string clip, string hash, string path)
         printf("\nConnection Failed \n"); 
         exit(1) ;
     } 
-    hash=hash+" "+clip+ " "+path ;
+    string mode("share") ;
+    hash= mode + " " +hash+" "+clip+ " "+path ;
     send(sock , hash.c_str() , strlen(hash.c_str()) , 0 ); 
      
     
