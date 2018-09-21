@@ -22,20 +22,25 @@ void shareproc(int new_socket,string filp)
 {
     //recv(new_socket,buffer.c_str(),512000,0) ;
     char buffer[512000] ;
-    read(new_socket,buffer,512000) ;  
+    read(new_socket,buffer,512000) ;
+
         string temp = buffer ;
         string temp1,temp2 ;
         stringstream s;
          s << temp ;
 
          s>>temp ;
+
+         cout<<temp<<endl ;
          if(temp.compare("share") == 0)
          {
 
             s>>temp;
             s>>temp1 ;
             s>>temp2 ;
-        
+
+         //   cout<<temp<<endl<<temp1<<endl<<temp2<<endl ;
+
      if(!details[temp].empty()) 
          return ;
 
@@ -44,7 +49,7 @@ void shareproc(int new_socket,string filp)
     details[temp].push_back(make_pair(temp1,temp2)) ;
     fprintf(fp,"%s\n%s\n%s\n",temp.c_str(),temp1.c_str(),temp2.c_str()) ;
 
-    // cout<<details.size()<<endl  ;
+    memset(buffer,0,sizeof(buffer)) ;
     fclose(fp) ;
 
         }
@@ -57,9 +62,38 @@ void shareproc(int new_socket,string filp)
         //     int len = details[hashish].size() ;
 
         //     for(int i = 0 ; i < len; i++)
+        //     {
+        //         cin>>
+        //         send(new_socket,)
+        //     }
 
 
         // }
+
+         else if(temp.compare("remove") == 0)
+        {
+            cout<<"Hello there" ;
+            string hashish ;
+            s>>hashish ;
+
+            details.erase(hashish) ;
+            FILE *fp ;
+            fp = fopen(filp.c_str(),"w") ;
+
+             for(auto i = details.begin(); i!= details.end(); i++)
+            {
+                 int siz = i->second.size() ;
+                for(int j = 0; j < siz ; j++)
+                {
+                    cout<<i->second[j].first.c_str()<<endl ;
+                    fprintf(fp,"%s\n%s",i->second[j].first.c_str(),i->second[j].second.c_str()) ;
+                }
+             }
+
+             fclose(fp) ;
+
+
+        }
 
     // unordered_map<string,vector<pair<string,string> > > :: iterator itr ;
 
@@ -74,7 +108,7 @@ void shareproc(int new_socket,string filp)
 
 int main(int argc, char const *argv[]) 
 { 
-    FILE *fp4 = fopen(argv[1],"w+") ;
+    FILE *fp4 = fopen(argv[1],"a+") ;
     fclose(fp4) ;
      FILE *fp3 = fopen(argv[1],"r") ;
     while(!feof(fp3))
@@ -86,10 +120,10 @@ int main(int argc, char const *argv[])
 
     }
     fclose(fp3) ;
-
     int server_fd, new_socket, valread; 
     struct sockaddr_in address; 
     int opt = 1; 
+    char buffer[512000] ;
     int addrlen = sizeof(address);
        
     // Creating socket file descriptor 
@@ -122,23 +156,18 @@ int main(int argc, char const *argv[])
         perror("listen"); 
         exit(EXIT_FAILURE); 
     } 
-
-   
-
-    while(1){
+     while(1){
     if ((new_socket = accept(server_fd, (struct sockaddr *)&address,(socklen_t*)&addrlen))<0) 
     { 
         perror("accept"); 
         exit(EXIT_FAILURE); 
     }
-    
 
             thread t {shareproc,new_socket,argv[1]}  ;
             t.detach() ;
     
-        
 
     
-    }
+     }
     return 0; 
 } 

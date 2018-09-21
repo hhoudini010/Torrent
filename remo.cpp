@@ -1,5 +1,5 @@
-#include "lib.h"
 
+#include "lib.h"
 
 #include <cstdio> 
 #include <sys/socket.h> 
@@ -9,10 +9,11 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#define PORT 8080 
+#define PORT 8080
 
-void share(string clip, string hash, string path)
+void remo(string hash)
 {
+
 	struct sockaddr_in address; 
     int sock = 0, valread; 
     struct sockaddr_in serv_addr; 
@@ -24,26 +25,28 @@ void share(string clip, string hash, string path)
         exit(1) ;
     } 
    
-    // memset(&serv_addr, '0', sizeof(serv_addr)); 
+ //    // memset(&serv_addr, '0', sizeof(serv_addr)); 
    
     serv_addr.sin_family = AF_INET; 
     address.sin_addr.s_addr = inet_addr("127.0.0.1"); 
     serv_addr.sin_port = htons(PORT); 
        
-    // if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
-    // { 
-    //     printf("\nInvalid address/ Address not supported \n"); 
-    //     exit(1) ;
-    // } 
-   
+    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
+    { 
+        printf("\nInvalid address/ Address not supported \n"); 
+        exit(1) ;
+    } 
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
     { 
         printf("\nConnection Failed \n"); 
         exit(1) ;
     } 
-    string mode("share") ;
-    hash= mode + " " +hash+" "+clip+ " "+path ;
-    send(sock , hash.c_str() , strlen(hash.c_str()) , 0 ); 
-     
-    
+
+    string mode("remove") ;
+
+    mode = mode + " " + hash ;
+
+    send(sock,mode.c_str(),mode.length(),0) ;
+
+  
 }

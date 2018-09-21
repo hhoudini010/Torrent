@@ -1,0 +1,2 @@
+192.168.1.20:8754
+/Users/sandeepkumargupta/Desktop/sock/thar.mp3

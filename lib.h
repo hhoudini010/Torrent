@@ -14,6 +14,7 @@ using namespace std ;
 
 void create_mtorrent_file(std::string, std::string, std::string , std::string, std::string ) ;
 void share(string,string,string) ;
+void remo(string) ;
 
 
 #endif
