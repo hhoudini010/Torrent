@@ -15,7 +15,8 @@
 using namespace std ;
 
 
-unordered_map<string,vector<pair<string,string> > > details ;
+unordered_map <string,string> details ;
+
 
 
 void shareproc(int new_socket,string filp)
@@ -31,7 +32,6 @@ void shareproc(int new_socket,string filp)
 
          s>>temp ;
 
-         cout<<temp<<endl ;
          if(temp.compare("share") == 0)
          {
 
@@ -39,15 +39,21 @@ void shareproc(int new_socket,string filp)
             s>>temp1 ;
             s>>temp2 ;
 
+
          //   cout<<temp<<endl<<temp1<<endl<<temp2<<endl ;
 
-     if(!details[temp].empty()) 
-         return ;
 
      FILE *fp = fopen(filp.c_str(),"a+") ;
 
-    details[temp].push_back(make_pair(temp1,temp2)) ;
+     string temp3 = temp + temp1 ;
+
+     if(details.find(temp3) == details.end())
+     {   
+     details[temp3] = temp2 ;
+
+  
     fprintf(fp,"%s\n%s\n%s\n",temp.c_str(),temp1.c_str(),temp2.c_str()) ;
+}
 
     memset(buffer,0,sizeof(buffer)) ;
     fclose(fp) ;
@@ -72,51 +78,43 @@ void shareproc(int new_socket,string filp)
 
          else if(temp.compare("remove") == 0)
         {
-            cout<<"Hello there" ;
             string hashish ;
+            string clip ;
             s>>hashish ;
+            s>>clip ;
 
-            details.erase(hashish) ;
+            string temp3 = hashish+clip ;
+
+            details.erase(temp3) ;
             FILE *fp ;
+            remove(filp.c_str()) ;
             fp = fopen(filp.c_str(),"w") ;
 
              for(auto i = details.begin(); i!= details.end(); i++)
             {
-                 int siz = i->second.size() ;
-                for(int j = 0; j < siz ; j++)
-                {
-                    cout<<i->second[j].first.c_str()<<endl ;
-                    fprintf(fp,"%s\n%s",i->second[j].first.c_str(),i->second[j].second.c_str()) ;
-                }
-             }
-
+                 fprintf(fp,"%s\n%s\n%s\n",i->first.substr(0,39).c_str(),i->first.substr(40,i->first.length()).c_str(),i->second.c_str() );
+            }
              fclose(fp) ;
 
 
-        }
+         }
 
-    // unordered_map<string,vector<pair<string,string> > > :: iterator itr ;
-
-    // for(auto i = details.begin(); i!= details.end(); i++)
-    // {
-    //     int siz = i->second.size() ;
-    //     for(int j = 0; j < siz ; j++)
-    //         cout<<i->second[j].second<<endl ;
-    // }
+  
 }
 
 
 int main(int argc, char const *argv[]) 
 { 
-    FILE *fp4 = fopen(argv[1],"a+") ;
+    FILE *fp4 = fopen(argv[1],"w+") ;
     fclose(fp4) ;
      FILE *fp3 = fopen(argv[1],"r") ;
     while(!feof(fp3))
     {
         char temp[512000],temp1[512000],temp2[512000] ;
         fscanf(fp3,"%s\n%s\n%s\n",temp,temp1,temp2) ;
+        strcat(temp,temp1) ;
         if(!details[temp].empty())
-        details[temp].push_back(make_pair(temp1,temp2)) ;
+            details[temp] = temp2 ;
 
     }
     fclose(fp3) ;

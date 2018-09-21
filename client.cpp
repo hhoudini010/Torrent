@@ -56,11 +56,9 @@ int main(int argc, char const *argv[])
 		 for( i = 0, j = 0; i < sizeof(out); i++, j+=2 )
        		 sprintf( &hex[j], "%02x", out[i] );
 
-       		cout<<hex ;
-
        		string temp = hex ;
 
-		 remo(temp) ;
+		 remo(temp,argv[1]) ;
 	}
 
 	// else if(command.compare("get") == 0)

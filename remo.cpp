@@ -11,7 +11,7 @@
 
 #define PORT 8080
 
-void remo(string hash)
+void remo(string hash, string clip)
 {
 
 	struct sockaddr_in address; 
@@ -44,7 +44,8 @@ void remo(string hash)
 
     string mode("remove") ;
 
-    mode = mode + " " + hash ;
+    mode = mode + " " + hash + " " + clip;
+
 
     send(sock,mode.c_str(),mode.length(),0) ;
 
