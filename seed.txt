@@ -1,3 +1,6 @@
-bfe0643687aa8bea558f2372f3d2e4a3827c83a
+384b342f006cce2cae8083adbdd48d60cc97fef4
+192.168.1.20:8754
+/Users/sandeepkumargupta/Desktop/sock/client.cpp
+bfe0643687aa8bea558f2372f3d2e4a3827c83ac
 192.168.1.20:8754
 /Users/sandeepkumargupta/Desktop/sock/thar.mp3

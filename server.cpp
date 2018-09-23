@@ -27,7 +27,10 @@ void shareproc(int new_socket,string filp)
 
         string temp = buffer ;
         string temp1,temp2 ;
+
+        //char tempv[512], tempv1[512] ;
         stringstream s;
+        
          s << temp ;
 
          s>>temp ;
@@ -38,6 +41,7 @@ void shareproc(int new_socket,string filp)
             s>>temp;
             s>>temp1 ;
             s>>temp2 ;
+            //cout<<"Hello"<<endl ;
 
 
          //   cout<<temp<<endl<<temp1<<endl<<temp2<<endl ;
@@ -83,6 +87,8 @@ void shareproc(int new_socket,string filp)
             s>>hashish ;
             s>>clip ;
 
+           // char a[512000] ;
+
             string temp3 = hashish+clip ;
 
             details.erase(temp3) ;
@@ -94,10 +100,51 @@ void shareproc(int new_socket,string filp)
             {
                  fprintf(fp,"%s\n%s\n%s\n",i->first.substr(0,39).c_str(),i->first.substr(40,i->first.length()).c_str(),i->second.c_str() );
             }
+           // send(new_socket,buffer,40,0) ;
              fclose(fp) ;
 
 
          }
+
+          else if(temp.compare("get") == 0)
+          {
+            cout<<"Hello" ;
+             string hashish ;
+
+             s>>hashish ;
+
+             char *tv = new char[52223];
+
+
+             cout<<hashish<<endl ;
+             
+             
+
+            // for(auto i = details.begin(); i!=details.end(); i++)
+            // {
+            //     if(i->first.substr(0,39).compare(hashish) == 0)
+            //     {
+            //       //  send(new_socket,i->first.substr(40,i->first.length()).c_str(),40,0) ;
+            //         //tosend = tosend + " " + i->first.substr(40,i->first.length()) + " " + i->second ;
+            //         cout<<"Hello"<<endl ;
+            //     }
+            // }
+
+            FILE *fp = fopen(filp.c_str(),"r") ;
+             while(!feof(fp))
+             {
+                 fscanf(fp,"%s\n",tv) ;
+                 if(hashish.compare(tv) == 0){
+                     fscanf(fp,"%s\n",tv) ;
+                  send(new_socket,tv,strlen(tv),0) ;
+                  //    fscanf(fp,"%s\n",tv) ;
+                  // send(new_socket,tv,strlen(tv),0) ;
+              }
+             }
+            fclose(fp) ;
+
+            
+        }
 
   
 }
@@ -110,7 +157,7 @@ int main(int argc, char const *argv[])
      FILE *fp3 = fopen(argv[1],"r") ;
     while(!feof(fp3))
     {
-        char temp[512000],temp1[512000],temp2[512000] ;
+        char temp[512],temp1[512],temp2[5120] ;
         fscanf(fp3,"%s\n%s\n%s\n",temp,temp1,temp2) ;
         strcat(temp,temp1) ;
         if(!details[temp].empty())

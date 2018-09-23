@@ -51,9 +51,12 @@ void create_mtorrent_file(string path, string torrent_filename, string tr1ip, st
 	cout<<chunks<<endl ;
 
 	fprintf(fp,"%s\n%s\n%s\n%zu\n%s",tr1ip.c_str(),tr2ip.c_str(),abs,siz,hash.c_str()) ;
+	fclose(fp) ;
 
 	SHA1((unsigned char*)hash.c_str(),hash.length(),out) ;
 	bin2hex(out,sizeof(out),hex) ;
+
+	cout<<hex<<endl ;
 
 	hash = hex ;
 
